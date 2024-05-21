@@ -29,5 +29,9 @@ namespace BD_6_semester
             return sqlconnect;
         }
 
+        public string getState()
+        {
+            return sqlconnect.State.ToString();
+        }
     }
 }

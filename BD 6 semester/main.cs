@@ -10,13 +10,14 @@ using System.Windows.Forms;
 
 namespace BD_6_semester
 {
-    public partial class Form1 : Form
+    public partial class main : Form
     {
         DataBase dataBase = new DataBase();
 
-        public Form1()
+        public main()
         {
             InitializeComponent();
+            label1.Text = dataBase.getState();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -27,21 +28,20 @@ namespace BD_6_semester
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender; // приводим отправителя к элементу типа CheckBox
+
             if (checkBox.Checked == true)
-            {
                 dataBase.openConnection();
-                textBox1.Text = "Подключено";
-            }
             else
-            {
                 dataBase.closeConnection();
-                textBox1.Text = "Отключено";
-            }
+
+            label1.Text = dataBase.getState();
         }
 
         private void selectAddItem_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            string selectedState = selectAddItem.SelectedItem.ToString();
+            MessageBox.Show(selectedState);
         }
+
     }
 }
