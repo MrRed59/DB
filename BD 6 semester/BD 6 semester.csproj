@@ -57,11 +57,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase.cs" />
-    <Compile Include="Factory.cs">
-      <SubType>Form</SubType>
+    <Compile Include="exportDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>exportDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Factory.Designer.cs">
-      <DependentUpon>Factory.cs</DependentUpon>
+    <Compile Include="exportDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>exportDataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="exportDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>exportDataSet2.xsd</DependentUpon>
     </Compile>
     <Compile Include="main.cs">
       <SubType>Form</SubType>
@@ -71,9 +80,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Factory.resx">
-      <DependentUpon>Factory.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="main.resx">
       <DependentUpon>main.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,6 +92,39 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="exportDataSet.xsc">
+      <DependentUpon>exportDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="exportDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>exportDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="exportDataSet.xss">
+      <DependentUpon>exportDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="exportDataSet1.xsc">
+      <DependentUpon>exportDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="exportDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>exportDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="exportDataSet1.xss">
+      <DependentUpon>exportDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="exportDataSet2.xsc">
+      <DependentUpon>exportDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="exportDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>exportDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="exportDataSet2.xss">
+      <DependentUpon>exportDataSet2.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
-using MySql.Data.MySqlClient;
+//using MySql.Data.MySqlClient;
 
 namespace BD_6_semester
 {
     class DataBase
     {
-        MySqlConnection sqlconnect = new MySqlConnection("server=localhost;port=5589;username=root;password=;database=Export");
-
+        //SqlConnection sqlconnect = new SqlConnection("server=localhost;port=5589;username=root;password=;database=Export");
+        SqlConnection sqlconnect = new SqlConnection(@"server=DESKTOP-V6Q9ITN\SQLEXPRESS;Initial Catalog=Export;Integrated Security=True");
+        
         public void openConnection()
         {
             if (sqlconnect.State == System.Data.ConnectionState.Closed)
@@ -24,7 +25,7 @@ namespace BD_6_semester
                 sqlconnect.Close();
         }
 
-        public MySqlConnection getConnection()
+        public SqlConnection getConnection()
         {
             return sqlconnect;
         }
