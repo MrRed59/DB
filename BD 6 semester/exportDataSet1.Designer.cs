@@ -895,7 +895,7 @@ namespace BD_6_semester.exportDataSet1TableAdapters {
     }
     
     /// <summary>
-    ///TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical Update scenarios
+    ///TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical UpdateDB scenarios
     ///</summary>
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
@@ -981,7 +981,7 @@ namespace BD_6_semester.exportDataSet1TableAdapters {
         }
         
         /// <summary>
-        ///Update rows in top-down order.
+        ///UpdateDB rows in top-down order.
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -1036,7 +1036,7 @@ namespace BD_6_semester.exportDataSet1TableAdapters {
         }
         
         /// <summary>
-        ///Remove inserted rows that become updated rows after calling TableAdapter.Update(inserted rows) first
+        ///Remove inserted rows that become updated rows after calling TableAdapter.UpdateDB(inserted rows) first
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -1060,7 +1060,7 @@ namespace BD_6_semester.exportDataSet1TableAdapters {
         }
         
         /// <summary>
-        ///Update all changes to the dataset.
+        ///UpdateDB all changes to the dataset.
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -1214,7 +1214,7 @@ namespace BD_6_semester.exportDataSet1TableAdapters {
         }
         
         /// <summary>
-        ///Update Order Option
+        ///UpdateDB Order Option
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         public enum UpdateOrderOption {
