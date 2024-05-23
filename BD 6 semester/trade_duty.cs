@@ -121,18 +121,20 @@ namespace BD_6_semester
 
             var countryName = textBoxName.Text;
             int tradeDuty;
+            var NameProduct = textBoxNameProduct.Text;
 
-            if (int.TryParse(textBoxTradeDuty.Text, out tradeDuty))
+            try
             {
-                var query = $"INSERT INTO country (country_name, continent, square) VALUES ('{countryName}', {tradeDuty});";
+                int.TryParse(textBoxTradeDuty.Text, out tradeDuty);
+                var query = $"EXEC AddTradeDuty '{countryName}', {tradeDuty}, '{NameProduct}';";
                 var command = new SqlCommand(query, dataBase.GetConnection());
                 command.ExecuteNonQuery();
 
                 MessageBox.Show("Запись добавлена.", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Запись не была добавлена. \"Целевая прибыль\" должна иметь числовой формат.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Запись не была добавлена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             RefreshDataGrid(dataGridView1);
@@ -143,7 +145,8 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            var query = $"SELECT * FROM country WHERE CONCAT (id, country_name, continent, square) LIKE '%" + textBoxSearch.Text + "%'";
+            var query = $"select trade_duty.id, country.country_name, trade_duty.title, product.product_name, product.article_number, product.cost_price " +
+                        $"from trade_duty LEFT JOIN country on country.id = trade_duty.country_id left join product on product.id = trade_duty.product_id LIKE '%" + textBoxSearch.Text + "%'";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -172,7 +175,7 @@ namespace BD_6_semester
 
             for (int index = 0; index < dataGridView1.Rows.Count; index++)
             {
-                var rowState = (RowState)dataGridView1.Rows[index].Cells[4].Value;
+                var rowState = (RowState)dataGridView1.Rows[index].Cells[6].Value;
 
                 if (rowState == RowState.Existed)
                     continue;
@@ -180,7 +183,7 @@ namespace BD_6_semester
                 if (rowState == RowState.Deleted)
                 {
                     var id = Convert.ToInt32(dataGridView1.Rows[index].Cells[0].Value);
-                    var query = $"DELETE FROM country WHERE id={id}";
+                    var query = $"DELETE FROM trade_duty WHERE id={id}";
 
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();

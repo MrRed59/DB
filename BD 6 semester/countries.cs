@@ -111,17 +111,18 @@ namespace BD_6_semester
             var continent = textBoxContinent.Text;
             int square;
 
-            if (int.TryParse(textBoxSquare.Text, out square))
+            try 
             {
+                int.TryParse(textBoxSquare.Text, out square);
                 var query = $"INSERT INTO country (country_name, continent, square) VALUES ('{countryName}', '{continent}', {square});";
                 var command = new SqlCommand(query, dataBase.GetConnection());
                 command.ExecuteNonQuery();
 
                 MessageBox.Show("Запись добавлена.", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Запись не была добавлена. \"Целевая прибыль\" должна иметь числовой формат.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Запись не была добавлена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             RefreshDataGrid(dataGridView1);

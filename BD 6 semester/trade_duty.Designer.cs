@@ -36,6 +36,8 @@ namespace BD_6_semester
             this.buttonFactoryAdd = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.textBoxNameProduct = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.textBoxTradeDuty = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
@@ -47,8 +49,6 @@ namespace BD_6_semester
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBoxNameProduct = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -138,6 +138,23 @@ namespace BD_6_semester
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(322, 118);
             this.panel2.TabIndex = 14;
+            // 
+            // textBoxNameProduct
+            // 
+            this.textBoxNameProduct.Location = new System.Drawing.Point(168, 77);
+            this.textBoxNameProduct.Name = "textBoxNameProduct";
+            this.textBoxNameProduct.Size = new System.Drawing.Size(142, 20);
+            this.textBoxNameProduct.TabIndex = 13;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(18, 78);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(127, 16);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Название товара:";
             // 
             // textBoxTradeDuty
             // 
@@ -244,23 +261,6 @@ namespace BD_6_semester
             this.label3.Size = new System.Drawing.Size(171, 20);
             this.label3.TabIndex = 0;
             this.label3.Text = "Торговые пошлины";
-            // 
-            // textBoxNameProduct
-            // 
-            this.textBoxNameProduct.Location = new System.Drawing.Point(168, 77);
-            this.textBoxNameProduct.Name = "textBoxNameProduct";
-            this.textBoxNameProduct.Size = new System.Drawing.Size(142, 20);
-            this.textBoxNameProduct.TabIndex = 13;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(18, 78);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 16);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Название товара:";
             // 
             // trade_duty
             // 

@@ -124,10 +124,11 @@ namespace BD_6_semester
             float costPrice;
             int factoryId;
 
-            if (int.TryParse(textBoxExp.Text, out expDate) &&
-                float.TryParse(textBoxCostPrice.Text, out costPrice) &&
-                int.TryParse(textBoxFactoryName.Text, out factoryId))
+            try 
             {
+                int.TryParse(textBoxExp.Text, out expDate);
+                float.TryParse(textBoxCostPrice.Text, out costPrice);
+                int.TryParse(textBoxFactoryName.Text, out factoryId);
                 var query = $"INSERT INTO product (product_name, article_number, date_of_manufacture, expiration_date, cost_price, factory_id) " +
                             $"VALUES ('{productName}', '{articleNum}', '{dateManufacture.Split(' ')[0]}', '{expDate}', '{costPrice}', {factoryId});";
                 var command = new SqlCommand(query, dataBase.GetConnection());
@@ -135,9 +136,9 @@ namespace BD_6_semester
 
                 MessageBox.Show("Запись добавлена.", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Запись не была добавлена. \"Целевая прибыль\" должна иметь числовой формат.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Запись не была добавлена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             RefreshDataGrid(dataGridView1);
