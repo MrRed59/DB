@@ -13,24 +13,24 @@ namespace BD_6_semester
         //SqlConnection sqlconnect = new SqlConnection("server=localhost;port=5589;username=root;password=;database=Export");
         SqlConnection sqlconnect = new SqlConnection(@"server=DESKTOP-V6Q9ITN\SQLEXPRESS;Initial Catalog=Export;Integrated Security=True");
         
-        public void openConnection()
+        public void OpenConnection()
         {
             if (sqlconnect.State == System.Data.ConnectionState.Closed)
                 sqlconnect.Open();
         }
 
-        public void closeConnection()
+        public void CloseConnection()
         {
             if (sqlconnect.State == System.Data.ConnectionState.Open)
                 sqlconnect.Close();
         }
 
-        public SqlConnection getConnection()
+        public SqlConnection GetConnection()
         {
             return sqlconnect;
         }
 
-        public string getState()
+        public string GetState()
         {
             return sqlconnect.State.ToString();
         }

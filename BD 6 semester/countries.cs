@@ -11,32 +11,22 @@ using System.Data.SqlClient;
 
 namespace BD_6_semester
 {
-    enum RowState
-    {
-        Existed,
-        New,
-        ModifiedNew,
-        Deleted
-    }
-    public partial class factory : Form
+    public partial class countries : Form
     {
         DataBase dataBase = new DataBase();
 
         int selectedRow;
-
-        public factory()
+        public countries()
         {
             InitializeComponent();
-        }              
+        }
 
         private void CreateColumns()
         {
             dataGridView1.Columns.Add("id", "id");
-            dataGridView1.Columns.Add("name_of_factory", "Название");
-            dataGridView1.Columns.Add("address", "Адрес");
-            dataGridView1.Columns.Add("id", "id");
-            dataGridView1.Columns.Add("factory_id", "factory_id");
-            dataGridView1.Columns.Add("target profit", "Целевая прибыль");
+            dataGridView1.Columns.Add("country_name", "Название");
+            dataGridView1.Columns.Add("continent", "Адрес");
+            dataGridView1.Columns.Add("quare", "id");
 
             dataGridView1.Columns.Add("IsNew", String.Empty);
         }
@@ -45,14 +35,11 @@ namespace BD_6_semester
         {
             try
             {
-                dgw.Rows.Add(record.GetInt32(0),
-                                            record.GetString(1),
-                                            record.GetString(2),
-                                            record.GetInt32(3),
-                                            record.GetInt32(4),
-                                            record.GetInt32(5),
-                                            RowState.ModifiedNew);
-                dgw.Columns[3].Visible = false;
+                dgw.Rows.Add(   record.GetInt32(0),
+                                record.GetString(1),
+                                record.GetString(2),
+                                record.GetInt32(3),
+                                RowState.ModifiedNew);
             }
             catch (Exception)
             {
@@ -65,7 +52,7 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            string query = $"SELECT * FROM factory LEFT JOIN target_point on factory.id = target_point.factory_id";
+            string query = $"SELECT * FROM country";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -77,12 +64,6 @@ namespace BD_6_semester
                 ReadSingleRow(dgw, reader);
 
             reader.Close();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            CreateColumns();
-            RefreshDataGrid(dataGridView1);
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -99,8 +80,8 @@ namespace BD_6_semester
                 DataGridViewRow row = dataGridView1.Rows[selectedRow];
 
                 textBoxName.Text = row.Cells[1].Value.ToString();
-                textBoxFactoryAddress.Text = row.Cells[2].Value.ToString();
-                textBoxTargetProfit.Text = row.Cells[5].Value.ToString();
+                textBoxContinent.Text = row.Cells[2].Value.ToString();
+                textBoxSquare.Text = row.Cells[3].Value.ToString();
             }
         }
 
@@ -110,10 +91,10 @@ namespace BD_6_semester
 
             if (dataGridView1.Rows[index].Cells[0].Value.ToString() == string.Empty)
             {
-                dataGridView1.Rows[index].Cells[6].Value = RowState.Deleted;
+                dataGridView1.Rows[index].Cells[4].Value = RowState.Deleted;
             }
 
-            dataGridView1.Rows[index].Cells[6].Value = RowState.Deleted;
+            dataGridView1.Rows[index].Cells[4].Value = RowState.Deleted;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -124,13 +105,15 @@ namespace BD_6_semester
         //добавить элемент в таблицу
         private void buttonFactoryAdd_Click(object sender, EventArgs e)
         {
-            var factoryName = textBoxName.Text;
-            var factoryAddress = textBoxFactoryAddress.Text;
-            int targetProfit;
+            dataBase.OpenConnection();
 
-            if (int.TryParse(textBoxTargetProfit.Text, out targetProfit))
+            var countryName = textBoxName.Text;
+            var continent = textBoxContinent.Text;
+            int square;
+
+            if (int.TryParse(textBoxSquare.Text, out square))
             {
-                var query = $"EXEC AddFactory '{factoryName}', '{factoryAddress}', '{targetProfit}';";
+                var query = $"INSERT INTO country (country_name, continent, square) VALUES ('{countryName}', '{continent}', {square});";
                 var command = new SqlCommand(query, dataBase.GetConnection());
                 command.ExecuteNonQuery();
 
@@ -149,7 +132,7 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            var query = $"SELECT * FROM factory left join target_point on factory.id = target_point.factory_id WHERE CONCAT (factory.id, factory.name_of_factory, factory.address, target_point.title) LIKE '%" + textBoxSearch.Text + "%'";
+            var query = $"SELECT * FROM country WHERE CONCAT (id, country_name, continent, square) LIKE '%" + textBoxSearch.Text + "%'";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -178,7 +161,7 @@ namespace BD_6_semester
 
             for (int index = 0; index < dataGridView1.Rows.Count; index++)
             {
-                var rowState = (RowState)dataGridView1.Rows[index].Cells[6].Value;
+                var rowState = (RowState)dataGridView1.Rows[index].Cells[4].Value;
 
                 if (rowState == RowState.Existed)
                     continue;
@@ -186,7 +169,7 @@ namespace BD_6_semester
                 if (rowState == RowState.Deleted)
                 {
                     var id = Convert.ToInt32(dataGridView1.Rows[index].Cells[0].Value);
-                    var query = $"DELETE FROM factory WHERE id={id}";
+                    var query = $"DELETE FROM country WHERE id={id}";
 
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();
@@ -215,21 +198,25 @@ namespace BD_6_semester
             RefreshDataGrid(dataGridView1);
         }
 
+
+        /// <summary>
+        /// /////////////////////
+        /// </summary>
         private void Edit()
         {
             var selectedRowIndex = dataGridView1.CurrentCell.RowIndex;
 
-            var factoryName = textBoxName.Text;
-            var factoryAddress = textBoxFactoryAddress.Text;
-            int targetProfit;
+            var countryName = textBoxName.Text;
+            var continent = textBoxContinent.Text;
+            int square;
 
             if (dataGridView1.Rows[selectedRowIndex].Cells[0].Value.ToString() != string.Empty)
             {
-                if (int.TryParse(textBoxTargetProfit.Text, out targetProfit))
+                if (int.TryParse(textBoxSquare.Text, out square))
                 {
-                    dataGridView1.Rows[selectedRowIndex].SetValues(factoryName, factoryAddress, targetProfit);
+                    dataGridView1.Rows[selectedRowIndex].SetValues(countryName, continent, square);
 
-                    string query = $"EXEC EditFactory '{factoryName}', '{factoryAddress}', {targetProfit};";
+                    string query = $"UPDATE country SET continent='{continent}', square='{square}' WHERE country_name='{countryName}';";
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();
 
@@ -240,6 +227,12 @@ namespace BD_6_semester
                     MessageBox.Show("Запись не была изменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+        private void countries_Load(object sender, EventArgs e)
+        {
+            CreateColumns();
+            RefreshDataGrid(dataGridView1);
         }
     }
 }

@@ -11,32 +11,26 @@ using System.Data.SqlClient;
 
 namespace BD_6_semester
 {
-    enum RowState
-    {
-        Existed,
-        New,
-        ModifiedNew,
-        Deleted
-    }
-    public partial class factory : Form
+    public partial class product : Form
     {
         DataBase dataBase = new DataBase();
 
         int selectedRow;
 
-        public factory()
+        public product()
         {
             InitializeComponent();
-        }              
+        }
 
         private void CreateColumns()
         {
             dataGridView1.Columns.Add("id", "id");
-            dataGridView1.Columns.Add("name_of_factory", "Название");
-            dataGridView1.Columns.Add("address", "Адрес");
-            dataGridView1.Columns.Add("id", "id");
-            dataGridView1.Columns.Add("factory_id", "factory_id");
-            dataGridView1.Columns.Add("target profit", "Целевая прибыль");
+            dataGridView1.Columns.Add("product_name", "Название");
+            dataGridView1.Columns.Add("article_number", "Артикул");
+            dataGridView1.Columns.Add("date_of_manufacture", "Дата изготовления");
+            dataGridView1.Columns.Add("expiration_date", "Срок годности");
+            dataGridView1.Columns.Add("cost_price", "Себестоимость");
+            dataGridView1.Columns.Add("factory_id", "id завода");
 
             dataGridView1.Columns.Add("IsNew", String.Empty);
         }
@@ -46,13 +40,13 @@ namespace BD_6_semester
             try
             {
                 dgw.Rows.Add(record.GetInt32(0),
-                                            record.GetString(1),
-                                            record.GetString(2),
-                                            record.GetInt32(3),
-                                            record.GetInt32(4),
-                                            record.GetInt32(5),
-                                            RowState.ModifiedNew);
-                dgw.Columns[3].Visible = false;
+                                record.GetString(1),
+                                record.GetString(2),
+                                record.GetValue(3).ToString().Split(' ')[0],
+                                record.GetInt32(4),
+                                record.GetValue(5),
+                                record.GetInt32(6),
+                                RowState.ModifiedNew);
             }
             catch (Exception)
             {
@@ -65,7 +59,7 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            string query = $"SELECT * FROM factory LEFT JOIN target_point on factory.id = target_point.factory_id";
+            string query = $"SELECT * FROM product";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -77,12 +71,6 @@ namespace BD_6_semester
                 ReadSingleRow(dgw, reader);
 
             reader.Close();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            CreateColumns();
-            RefreshDataGrid(dataGridView1);
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -99,8 +87,11 @@ namespace BD_6_semester
                 DataGridViewRow row = dataGridView1.Rows[selectedRow];
 
                 textBoxName.Text = row.Cells[1].Value.ToString();
-                textBoxFactoryAddress.Text = row.Cells[2].Value.ToString();
-                textBoxTargetProfit.Text = row.Cells[5].Value.ToString();
+                textBoxTradeDuty.Text = row.Cells[2].Value.ToString();
+                dateTimePicker1.Text = row.Cells[3].Value.ToString();
+                textBoxExp.Text = row.Cells[4].Value.ToString();
+                textBoxCostPrice.Text = row.Cells[5].Value.ToString();
+                textBoxFactoryName.Text = row.Cells[6].Value.ToString();
             }
         }
 
@@ -110,10 +101,10 @@ namespace BD_6_semester
 
             if (dataGridView1.Rows[index].Cells[0].Value.ToString() == string.Empty)
             {
-                dataGridView1.Rows[index].Cells[6].Value = RowState.Deleted;
+                dataGridView1.Rows[index].Cells[7].Value = RowState.Deleted;
             }
 
-            dataGridView1.Rows[index].Cells[6].Value = RowState.Deleted;
+            dataGridView1.Rows[index].Cells[7].Value = RowState.Deleted;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -124,13 +115,21 @@ namespace BD_6_semester
         //добавить элемент в таблицу
         private void buttonFactoryAdd_Click(object sender, EventArgs e)
         {
-            var factoryName = textBoxName.Text;
-            var factoryAddress = textBoxFactoryAddress.Text;
-            int targetProfit;
+            dataBase.OpenConnection();
 
-            if (int.TryParse(textBoxTargetProfit.Text, out targetProfit))
+            var productName = textBoxName.Text;
+            var articleNum = textBoxTradeDuty.Text;
+            string dateManufacture = dateTimePicker1.Value.ToString();
+            int expDate;
+            float costPrice;
+            int factoryId;
+
+            if (int.TryParse(textBoxExp.Text, out expDate) &&
+                float.TryParse(textBoxCostPrice.Text, out costPrice) &&
+                int.TryParse(textBoxFactoryName.Text, out factoryId))
             {
-                var query = $"EXEC AddFactory '{factoryName}', '{factoryAddress}', '{targetProfit}';";
+                var query = $"INSERT INTO product (product_name, article_number, date_of_manufacture, expiration_date, cost_price, factory_id) " +
+                            $"VALUES ('{productName}', '{articleNum}', '{dateManufacture.Split(' ')[0]}', '{expDate}', '{costPrice}', {factoryId});";
                 var command = new SqlCommand(query, dataBase.GetConnection());
                 command.ExecuteNonQuery();
 
@@ -149,7 +148,8 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            var query = $"SELECT * FROM factory left join target_point on factory.id = target_point.factory_id WHERE CONCAT (factory.id, factory.name_of_factory, factory.address, target_point.title) LIKE '%" + textBoxSearch.Text + "%'";
+            var query = $"SELECT * FROM product WHERE CONCAT (id, product_name, article_number, date_of_manufacture, expiration_date, cost_price, factory_id) " +
+                        $"LIKE '%" + textBoxSearch.Text + "%'";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -178,7 +178,7 @@ namespace BD_6_semester
 
             for (int index = 0; index < dataGridView1.Rows.Count; index++)
             {
-                var rowState = (RowState)dataGridView1.Rows[index].Cells[6].Value;
+                var rowState = (RowState)dataGridView1.Rows[index].Cells[7].Value;
 
                 if (rowState == RowState.Existed)
                     continue;
@@ -186,7 +186,7 @@ namespace BD_6_semester
                 if (rowState == RowState.Deleted)
                 {
                     var id = Convert.ToInt32(dataGridView1.Rows[index].Cells[0].Value);
-                    var query = $"DELETE FROM factory WHERE id={id}";
+                    var query = $"DELETE FROM product WHERE id={id}";
 
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();
@@ -215,21 +215,33 @@ namespace BD_6_semester
             RefreshDataGrid(dataGridView1);
         }
 
+
+        /// <summary>
+        /// /////////////////////
+        /// </summary>
         private void Edit()
         {
             var selectedRowIndex = dataGridView1.CurrentCell.RowIndex;
 
-            var factoryName = textBoxName.Text;
-            var factoryAddress = textBoxFactoryAddress.Text;
-            int targetProfit;
+            var productName = textBoxName.Text;
+            var articleNum = textBoxTradeDuty.Text;
+            string dateManufacture = dateTimePicker1.Value.ToString();
+            int expDate;
+            float costPrice;
+            int factoryId;            
 
             if (dataGridView1.Rows[selectedRowIndex].Cells[0].Value.ToString() != string.Empty)
             {
-                if (int.TryParse(textBoxTargetProfit.Text, out targetProfit))
+                if (int.TryParse(textBoxExp.Text, out expDate) &&
+                float.TryParse(textBoxCostPrice.Text, out costPrice) &&
+                int.TryParse(textBoxFactoryName.Text, out factoryId))
                 {
-                    dataGridView1.Rows[selectedRowIndex].SetValues(factoryName, factoryAddress, targetProfit);
+                    dataGridView1.Rows[selectedRowIndex].SetValues(productName, articleNum, dateManufacture, expDate, costPrice, factoryId);
 
-                    string query = $"EXEC EditFactory '{factoryName}', '{factoryAddress}', {targetProfit};";
+                    string query = $"UPDATE product SET " +
+                                    $"article_number='{articleNum}', date_of_manufacture='{dateManufacture.Split(' ')[0]}', expiration_date={expDate}," +
+                                    $"cost_price={costPrice}, factory_id={factoryId}" +
+                                    $"WHERE product_name='{productName}';";
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();
 
@@ -240,6 +252,16 @@ namespace BD_6_semester
                     MessageBox.Show("Запись не была изменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+
+        /// <summary>
+        /// ///
+        /// </summary>
+        private void product_Load(object sender, EventArgs e)
+        {
+            CreateColumns();
+            RefreshDataGrid(dataGridView1);
         }
     }
 }
