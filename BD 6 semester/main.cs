@@ -54,6 +54,7 @@ namespace BD_6_semester
                                             record.GetInt32(4),
                                             record.GetInt32(5),
                                             RowState.ModifiedNew);
+                dgw.Columns[3].Visible = false;
             }
             catch (Exception)
             {
@@ -242,7 +243,5 @@ namespace BD_6_semester
                 }
             }
         }
-
-
     }
 }
