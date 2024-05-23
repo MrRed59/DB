@@ -11,22 +11,18 @@ using System.Data.SqlClient;
 
 namespace BD_6_semester
 {
-    enum RowState
+    public partial class factory : Form
     {
-        Existed,
-        New,
-        ModifiedNew,
-        Deleted
-    }
+        DataBase dataBase = new DataBase();
 
-    public partial class main : Form
-    {
-         public main()
+        int selectedRow;
+
+        public factory()
         {
             InitializeComponent();
-        }
+        }              
 
-        /*private void CreateColumns()
+        private void CreateColumns()
         {
             dataGridView1.Columns.Add("id", "id");
             dataGridView1.Columns.Add("name_of_factory", "Название");
@@ -74,12 +70,12 @@ namespace BD_6_semester
                 ReadSingleRow(dgw, reader);
 
             reader.Close();
-        }*/
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            /*CreateColumns();
-            RefreshDataGrid(dataGridView1);*/
+            CreateColumns();
+            RefreshDataGrid(dataGridView1);
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -87,7 +83,7 @@ namespace BD_6_semester
 
         }
 
-        /*private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             selectedRow = e.RowIndex;
 
@@ -237,12 +233,6 @@ namespace BD_6_semester
                     MessageBox.Show("Запись не была изменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-        }*/
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            factory form1 = new factory();
-            form1.Show();
         }
     }
 }
