@@ -52,21 +52,21 @@ namespace BD_6_semester
                                             record.GetString(2),
                                             record.GetInt32(3),
                                             record.GetInt32(4),
-                                            record.GetDecimal(5),
+                                            record.GetInt32(5),
                                             RowState.ModifiedNew);
             }
             catch (Exception)
             {
                 MessageBox.Show("Ошибка", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
-            }            
+            }
         }
 
         private void RefreshDataGrid(DataGridView dgw)
         {
             dgw.Rows.Clear();
 
-            string query = $"SELECT * FROM factory LEFT JOIN target_point on factory.id = target_point.factory_id";            
+            string query = $"SELECT * FROM factory LEFT JOIN target_point on factory.id = target_point.factory_id";
 
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
 
@@ -85,18 +85,6 @@ namespace BD_6_semester
             CreateColumns();
             RefreshDataGrid(dataGridView1);
         }
-
-        /*private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender; // приводим отправителя к элементу типа CheckBox
-
-            if (checkBox.Checked == true)
-                dataBase.openConnection();
-            else
-                dataBase.closeConnection();
-
-            label1.Text = dataBase.getState();
-        }*/
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -139,11 +127,11 @@ namespace BD_6_semester
         {
             var factoryName = textBoxFactoryName.Text;
             var factoryAddress = textBoxFactoryAddress.Text;
-            decimal targetProfit;
+            int targetProfit;
 
-            if (decimal.TryParse(textBoxTargetProfit.Text, out targetProfit))
+            if (int.TryParse(textBoxTargetProfit.Text, out targetProfit))
             {
-                var query = $"EXEC AddFactory '{factoryName}', '{factoryAddress}', {targetProfit};";
+                var query = $"EXEC AddFactory '{factoryName}', '{factoryAddress}', '{targetProfit}';";
                 var command = new SqlCommand(query, dataBase.getConnection());
                 command.ExecuteNonQuery();
 
@@ -153,6 +141,8 @@ namespace BD_6_semester
             {
                 MessageBox.Show("Запись не была добавлена. \"Целевая прибыль\" должна иметь числовой формат.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+
+            RefreshDataGrid(dataGridView1);
         }
 
         //поиск элемента в БД
@@ -183,7 +173,7 @@ namespace BD_6_semester
         }
 
         //удалить из БД элемент
-        private void UpdateDB()             
+        private void UpdateDB()
         {
             dataBase.openConnection();
 
@@ -194,7 +184,7 @@ namespace BD_6_semester
                 if (rowState == RowState.Existed)
                     continue;
 
-                if(rowState == RowState.Deleted)
+                if (rowState == RowState.Deleted)
                 {
                     var id = Convert.ToInt32(dataGridView1.Rows[index].Cells[0].Value);
                     var query = $"DELETE FROM factory WHERE id={id}";
@@ -232,15 +222,15 @@ namespace BD_6_semester
 
             var factoryName = textBoxFactoryName.Text;
             var factoryAddress = textBoxFactoryAddress.Text;
-            decimal targetProfit;
+            int targetProfit;
 
             if (dataGridView1.Rows[selectedRowIndex].Cells[0].Value.ToString() != string.Empty)
             {
-                if (decimal.TryParse(textBoxTargetProfit.Text, out targetProfit))
+                if (int.TryParse(textBoxTargetProfit.Text, out targetProfit))
                 {
                     dataGridView1.Rows[selectedRowIndex].SetValues(factoryName, factoryAddress, targetProfit);
 
-                    var query = $"EXEC EditFactory '{factoryName}', '{factoryAddress}', {targetProfit};";
+                    string query = $"EXEC EditFactory '{factoryName}', '{factoryAddress}', {targetProfit};";
                     var command = new SqlCommand(query, dataBase.getConnection());
                     command.ExecuteNonQuery();
 
@@ -253,9 +243,6 @@ namespace BD_6_semester
             }
         }
 
-        private void textBoxFactoryName_TextChanged(object sender, EventArgs e)
-        {
 
-        }
     }
 }

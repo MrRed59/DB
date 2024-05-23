@@ -72,11 +72,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>exportDataSet2.xsd</DependentUpon>
     </Compile>
-    <Compile Include="exportDataSet3.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>exportDataSet3.xsd</DependentUpon>
-    </Compile>
     <Compile Include="main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,17 +124,6 @@
     </None>
     <None Include="exportDataSet2.xss">
       <DependentUpon>exportDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="exportDataSet3.xsc">
-      <DependentUpon>exportDataSet3.xsd</DependentUpon>
-    </None>
-    <None Include="exportDataSet3.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>exportDataSet3.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="exportDataSet3.xss">
-      <DependentUpon>exportDataSet3.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
