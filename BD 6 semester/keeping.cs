@@ -11,13 +11,13 @@ using System.Data.SqlClient;
 
 namespace BD_6_semester
 {
-    public partial class product : Form
+    public partial class keeping : Form
     {
         DataBase dataBase = new DataBase();
 
         int selectedRow;
 
-        public product()
+        public keeping()
         {
             InitializeComponent();
         }
@@ -25,13 +25,9 @@ namespace BD_6_semester
         private void CreateColumns()
         {
             dataGridView1.Columns.Add("id", "id");
-            dataGridView1.Columns.Add("product_name", "Название");
-            dataGridView1.Columns.Add("article_number", "Артикул");
-            dataGridView1.Columns.Add("date_of_manufacture", "Дата изготовления");
-            dataGridView1.Columns.Add("expiration_date", "Срок годности");
-            dataGridView1.Columns.Add("cost_price", "Себестоимость");
-            dataGridView1.Columns.Add("factory_id", "id завода");
-            dataGridView1.Columns.Add("margin", "Наценка");
+            dataGridView1.Columns.Add("name_of_factory", "Название завода");
+            dataGridView1.Columns.Add("product_name", "Название товара");
+            dataGridView1.Columns.Add("quantity", "Количество");
 
             dataGridView1.Columns.Add("IsNew", String.Empty);
         }
@@ -43,11 +39,7 @@ namespace BD_6_semester
                 dgw.Rows.Add(record.GetInt32(0),
                                 record.GetString(1),
                                 record.GetString(2),
-                                record.GetValue(3).ToString().Split(' ')[0],
-                                record.GetInt32(4),
-                                record.GetValue(5),
-                                record.GetInt32(6),
-                                record.GetValue(7),
+                                record.GetInt32(3),
                                 RowState.ModifiedNew);
             }
             catch (Exception)
@@ -61,7 +53,9 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            string query = $"SELECT * FROM product";
+            string query = $"SELECT keeping.id, name_of_factory, product_name, quantity FROM keeping " +
+                            $"left join factory on factory.id = keeping.factory_id " +
+                            $"left join product on product.id = keeping.product_id";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -89,13 +83,8 @@ namespace BD_6_semester
                 DataGridViewRow row = dataGridView1.Rows[selectedRow];
 
                 textBoxName.Text = row.Cells[1].Value.ToString();
-                textBoxTradeDuty.Text = row.Cells[2].Value.ToString();
-                dateTimePicker1.Text = row.Cells[3].Value.ToString();
-                textBoxExp.Text = row.Cells[4].Value.ToString();
-                textBoxCostPrice.Text = row.Cells[5].Value.ToString();
-                textBoxFactoryName.Text = row.Cells[6].Value.ToString();
-                textBoxMargin.Text = row.Cells[7].Value.ToString();
-
+                textBoxProduct.Text = row.Cells[2].Value.ToString();
+                textBoxKeep.Text = row.Cells[3].Value.ToString();
             }
         }
 
@@ -105,10 +94,10 @@ namespace BD_6_semester
 
             if (dataGridView1.Rows[index].Cells[0].Value.ToString() == string.Empty)
             {
-                dataGridView1.Rows[index].Cells[8].Value = RowState.Deleted;
+                dataGridView1.Rows[index].Cells[4].Value = RowState.Deleted;
             }
 
-            dataGridView1.Rows[index].Cells[8].Value = RowState.Deleted;
+            dataGridView1.Rows[index].Cells[4].Value = RowState.Deleted;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -121,22 +110,14 @@ namespace BD_6_semester
         {
             dataBase.OpenConnection();
 
-            var productName = textBoxName.Text;
-            var articleNum = textBoxTradeDuty.Text;
-            string dateManufacture = dateTimePicker1.Value.ToString();
-            int expDate;
-            float costPrice;
-            int factoryId;
-            float margin;
+            var factoryName = textBoxName.Text;
+            var productName = textBoxProduct.Text;
+            int keep;
 
-            try 
+            try
             {
-                int.TryParse(textBoxExp.Text, out expDate);
-                float.TryParse(textBoxCostPrice.Text, out costPrice);
-                int.TryParse(textBoxFactoryName.Text, out factoryId);
-                float.TryParse(textBoxMargin.Text, out margin);
-                var query = $"INSERT INTO product (product_name, article_number, date_of_manufacture, expiration_date, cost_price, factory_id, margin) " +
-                            $"VALUES ('{productName}', '{articleNum}', '{dateManufacture.Split(' ')[0]}', '{expDate}', '{costPrice}', {factoryId}, {margin});";
+                int.TryParse(textBoxKeep.Text, out keep);
+                var query = $"EXEC AddKeep '{factoryName}', '{productName}', {keep}";
                 var command = new SqlCommand(query, dataBase.GetConnection());
                 command.ExecuteNonQuery();
 
@@ -155,8 +136,9 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            var query = $"SELECT * FROM product WHERE CONCAT (id, product_name, article_number, date_of_manufacture, expiration_date, cost_price, factory_id, margin) " +
-                        $"LIKE '%" + textBoxSearch.Text + "%'";
+            var query = $"SELECT keeping.id, name_of_factory, product_name, quantity FROM keeping " +
+                $"left join factory on factory.id = keeping.factory_id" +
+                $"left join product on product.id = keeping.product_id WHERE CONCAT(keeping.id, factory.name_of_factory, product.product_name, quantity) LIKE '%" + textBoxSearch.Text + "%'";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -185,7 +167,7 @@ namespace BD_6_semester
 
             for (int index = 0; index < dataGridView1.Rows.Count; index++)
             {
-                var rowState = (RowState)dataGridView1.Rows[index].Cells[8].Value;
+                var rowState = (RowState)dataGridView1.Rows[index].Cells[4].Value;
 
                 if (rowState == RowState.Existed)
                     continue;
@@ -193,7 +175,7 @@ namespace BD_6_semester
                 if (rowState == RowState.Deleted)
                 {
                     var id = Convert.ToInt32(dataGridView1.Rows[index].Cells[0].Value);
-                    var query = $"DELETE FROM product WHERE id={id}";
+                    var query = $"DELETE FROM keeping WHERE id={id}";
 
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();
@@ -230,27 +212,17 @@ namespace BD_6_semester
         {
             var selectedRowIndex = dataGridView1.CurrentCell.RowIndex;
 
-            var productName = textBoxName.Text;
-            var articleNum = textBoxTradeDuty.Text;
-            string dateManufacture = dateTimePicker1.Value.ToString();
-            int expDate;
-            float costPrice;
-            int factoryId;
-            float margin;
+            var factoryName = textBoxName.Text;
+            var productName = textBoxProduct.Text;
+            int  keep;
 
             if (dataGridView1.Rows[selectedRowIndex].Cells[0].Value.ToString() != string.Empty)
             {
-                if (int.TryParse(textBoxExp.Text, out expDate) &&
-                float.TryParse(textBoxCostPrice.Text, out costPrice) &&
-                int.TryParse(textBoxFactoryName.Text, out factoryId) &&
-                float.TryParse(textBoxMargin.Text, out margin))
+                if (int.TryParse(textBoxKeep.Text, out keep))
                 {
-                    dataGridView1.Rows[selectedRowIndex].SetValues(productName, articleNum, dateManufacture, expDate, costPrice, factoryId);
+                    dataGridView1.Rows[selectedRowIndex].SetValues(factoryName, productName, keep);
 
-                    string query = $"UPDATE product SET " +
-                                    $"article_number='{articleNum}', date_of_manufacture='{dateManufacture.Split(' ')[0]}', expiration_date={expDate}," +
-                                    $"cost_price={costPrice}, factory_id={factoryId}, margin={margin}" +
-                                    $"WHERE product_name='{productName}';";
+                    string query = $"EXEC UpdateKeep '{factoryName}', {keep}";
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();
 
@@ -263,11 +235,7 @@ namespace BD_6_semester
             }
         }
 
-
-        /// <summary>
-        /// ///
-        /// </summary>
-        private void product_Load(object sender, EventArgs e)
+        private void keeping_Load(object sender, EventArgs e)
         {
             CreateColumns();
             RefreshDataGrid(dataGridView1);
