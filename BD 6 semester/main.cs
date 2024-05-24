@@ -58,7 +58,13 @@ namespace BD_6_semester
 
         private void button7_Click(object sender, EventArgs e)
         {
-            prices form1 = new prices();
+            calculation form1 = new calculation();
+            form1.Show();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            price form1 = new price();
             form1.Show();
         }
     }

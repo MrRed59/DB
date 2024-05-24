@@ -65,10 +65,7 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            string query = $"SELECT trade_duty.id, country.country_name, trade_duty.title, product.product_name, product.article_number, product.cost_price, price.sale_price " +
-                $"FROM trade_duty LEFT JOIN country on country.id = trade_duty.country_id " +
-                $"left join product on product.id = trade_duty.product_id " +
-                $"left join price on price.product_id = trade_duty.product_id; ";
+            string query = $"SELECT * FROM trade_duty_v";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -226,22 +223,25 @@ namespace BD_6_semester
 
             var countryName = textBoxName.Text;
             int tradeDuty;
+            var NameProduct = textBoxNameProduct.Text;
 
             if (dataGridView1.Rows[selectedRowIndex].Cells[0].Value.ToString() != string.Empty)
             {
-                if (int.TryParse(textBoxTradeDuty.Text, out tradeDuty))
+                try
                 {
+                    int.TryParse(textBoxTradeDuty.Text, out tradeDuty);
                     dataGridView1.Rows[selectedRowIndex].SetValues(countryName, tradeDuty);
 
-                    /*string query = $"UPDATE country SET continent='{continent}', square='{square}' WHERE country_name='{countryName}';";
+                    int.TryParse(textBoxTradeDuty.Text, out tradeDuty);
+                    var query = $"EXEC UpdateTradeDuty '{countryName}', {tradeDuty}, '{NameProduct}';";
                     var command = new SqlCommand(query, dataBase.GetConnection());
-                    command.ExecuteNonQuery();*/
+                    command.ExecuteNonQuery();
 
                     MessageBox.Show("Запись изменена.", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else
+                catch (Exception)
                 {
-                    MessageBox.Show("Запись не была изменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Запись не была добавлена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

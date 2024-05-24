@@ -10,7 +10,6 @@ namespace BD_6_semester
 {
     class DataBase
     {
-        //SqlConnection sqlconnect = new SqlConnection("server=localhost;port=5589;username=root;password=;database=Export");
         SqlConnection sqlconnect = new SqlConnection(@"server=DESKTOP-V6Q9ITN\SQLEXPRESS;Initial Catalog=Export;Integrated Security=True");
         
         public void OpenConnection()

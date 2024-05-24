@@ -11,9 +11,9 @@ using System.Data.SqlClient;
 
 namespace BD_6_semester
 {
-    public partial class prices : Form
+    public partial class calculation : Form
     {
-        public prices()
+        public calculation()
         {
             InitializeComponent();
         }

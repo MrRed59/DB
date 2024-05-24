@@ -53,9 +53,7 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            string query = $"SELECT keeping.id, name_of_factory, product_name, quantity FROM keeping " +
-                            $"left join factory on factory.id = keeping.factory_id " +
-                            $"left join product on product.id = keeping.product_id";
+            string query = $"SELECT * FROM keeping_v";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -218,8 +216,9 @@ namespace BD_6_semester
 
             if (dataGridView1.Rows[selectedRowIndex].Cells[0].Value.ToString() != string.Empty)
             {
-                if (int.TryParse(textBoxKeep.Text, out keep))
+                try 
                 {
+                    int.TryParse(textBoxKeep.Text, out keep);
                     dataGridView1.Rows[selectedRowIndex].SetValues(factoryName, productName, keep);
 
                     string query = $"EXEC UpdateKeep '{factoryName}', {keep}";
@@ -228,9 +227,9 @@ namespace BD_6_semester
 
                     MessageBox.Show("Запись изменена.", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else
+                catch (Exception)
                 {
-                    MessageBox.Show("Запись не была изменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Запись не была добавлена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

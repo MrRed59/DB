@@ -30,6 +30,8 @@ namespace BD_6_semester
             dataGridView1.Columns.Add("country_name", "Название страны");
             dataGridView1.Columns.Add("date_of_transaction", "Дата сделки");
             dataGridView1.Columns.Add("delivery_date", "Дата поставки");
+            dataGridView1.Columns.Add("sumDelivery", "Сумма");
+            dataGridView1.Columns.Add("number", "Количество");
 
             dataGridView1.Columns.Add("IsNew", String.Empty);
         }
@@ -45,6 +47,8 @@ namespace BD_6_semester
                                 record.GetString(4),
                                 record.GetValue(5).ToString().Split(' ')[0],
                                 record.GetValue(6).ToString().Split(' ')[0],
+                                record.GetValue(7),
+                                record.GetValue(8),
                                 RowState.ModifiedNew);
             }
             catch (Exception)
@@ -58,11 +62,7 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            string query = $"SELECT export.id, name_of_factory, product_name, sale_price, country_name, date_of_transaction, delivery_date FROM export " +
-                $"left join factory on factory.id = export.factory_id " +
-                $"left join product on product.id = export.product_id " +
-                $"left join price on price.id = export.price_id " +
-                $"left join country on country.id = export.country_id; ";
+            string query = $"SELECT * FROM export_v";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -91,11 +91,10 @@ namespace BD_6_semester
 
                 textBoxName.Text = row.Cells[1].Value.ToString();
                 textBoxProduct.Text = row.Cells[2].Value.ToString();
-                textBoxKeep.Text = row.Cells[3].Value.ToString();
                 textBox1.Text = row.Cells[4].Value.ToString();
                 dateTimePicker2.Text = row.Cells[5].Value.ToString();
                 dateTimePicker3.Text = row.Cells[6].Value.ToString();
-
+                textBox2.Text = row.Cells[8].Value.ToString();
             }
         }
 
@@ -105,10 +104,10 @@ namespace BD_6_semester
 
             if (dataGridView1.Rows[index].Cells[0].Value.ToString() == string.Empty)
             {
-                dataGridView1.Rows[index].Cells[7].Value = RowState.Deleted;
+                dataGridView1.Rows[index].Cells[9].Value = RowState.Deleted;
             }
 
-            dataGridView1.Rows[index].Cells[7].Value = RowState.Deleted;
+            dataGridView1.Rows[index].Cells[9].Value = RowState.Deleted;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -123,15 +122,15 @@ namespace BD_6_semester
 
             var factoryName = textBoxName.Text;
             var productName = textBoxProduct.Text;
-            int kepping;
             var countryName = textBox1.Text;
             string dateTransaction = dateTimePicker2.Value.ToString();
             string dateDelivery = dateTimePicker3.Value.ToString();
+            int numDelivery;
 
             try
             {
-                int.TryParse(textBoxKeep.Text, out kepping);
-                var query = $"EXEC AddExport '{factoryName}', '{productName}', {kepping}, '{countryName}', '{dateTransaction}', '{dateDelivery}'";
+                int.TryParse(textBox2.Text, out numDelivery);
+                var query = $"EXEC AddExport '{factoryName}', '{productName}', '{countryName}', '{dateTransaction}', '{dateDelivery}', '{numDelivery}'";
                 var command = new SqlCommand(query, dataBase.GetConnection());
                 command.ExecuteNonQuery();
 
@@ -150,7 +149,7 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            var query = $"SELECT * FROM product WHERE CONCAT (id, product_name, article_number, date_of_manufacture, expiration_date, cost_price, factory_id, margin) " +
+            var query = $"SELECT * FROM export_v WHERE CONCAT (id, name_of_factory, product_name, sale_price, country_name, date_of_transaction, delivery_date, sumDelivery, number) " +
                         $"LIKE '%" + textBoxSearch.Text + "%'";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
@@ -180,7 +179,7 @@ namespace BD_6_semester
 
             for (int index = 0; index < dataGridView1.Rows.Count; index++)
             {
-                var rowState = (RowState)dataGridView1.Rows[index].Cells[7].Value;
+                var rowState = (RowState)dataGridView1.Rows[index].Cells[9].Value;
 
                 if (rowState == RowState.Existed)
                     continue;
@@ -225,28 +224,29 @@ namespace BD_6_semester
         {
             var selectedRowIndex = dataGridView1.CurrentCell.RowIndex;
 
-             var factoryName = textBoxName.Text;
+            var factoryName = textBoxName.Text;
             var productName = textBoxProduct.Text;
-            int kepping;
             var countryName = textBox1.Text;
             string dateTransaction = dateTimePicker2.Value.ToString();
             string dateDelivery = dateTimePicker3.Value.ToString();
+            int numDelivery;
 
             if (dataGridView1.Rows[selectedRowIndex].Cells[0].Value.ToString() != string.Empty)
             {
-                if (int.TryParse(textBoxKeep.Text, out kepping))
+                try 
                 {
-                    dataGridView1.Rows[selectedRowIndex].SetValues(factoryName, productName, kepping, countryName, dateTransaction, dateDelivery);
+                    int.TryParse(textBox2.Text, out numDelivery);
+                    dataGridView1.Rows[selectedRowIndex].SetValues(factoryName, productName, countryName, dateTransaction, dateDelivery, numDelivery);
 
-                    string query = $"EXEC UpdateExport '{factoryName}', '{productName}','{kepping}', '{countryName}', '{dateTransaction}', '{dateDelivery}'";
+                    string query = $"EXEC UpdateExport '{factoryName}', '{productName}', '{countryName}', '{dateTransaction}', '{dateDelivery}', '{numDelivery}'";
                     var command = new SqlCommand(query, dataBase.GetConnection());
                     command.ExecuteNonQuery();
 
                     MessageBox.Show("Запись изменена.", "Успешно", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else
+                catch (Exception)
                 {
-                    MessageBox.Show("Запись не была изменена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Запись не была добавлена.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

@@ -112,11 +112,17 @@
     <Compile Include="main.Designer.cs">
       <DependentUpon>main.cs</DependentUpon>
     </Compile>
-    <Compile Include="prices.cs">
+    <Compile Include="price.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="prices.Designer.cs">
-      <DependentUpon>prices.cs</DependentUpon>
+    <Compile Include="price.Designer.cs">
+      <DependentUpon>price.cs</DependentUpon>
+    </Compile>
+    <Compile Include="calculation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="calculation.Designer.cs">
+      <DependentUpon>calculation.cs</DependentUpon>
     </Compile>
     <Compile Include="product.cs">
       <SubType>Form</SubType>
@@ -147,8 +153,11 @@
     <EmbeddedResource Include="main.resx">
       <DependentUpon>main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="prices.resx">
-      <DependentUpon>prices.cs</DependentUpon>
+    <EmbeddedResource Include="price.resx">
+      <DependentUpon>price.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="calculation.resx">
+      <DependentUpon>calculation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="product.resx">
       <DependentUpon>product.cs</DependentUpon>
