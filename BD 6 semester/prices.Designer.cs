@@ -1,7 +1,7 @@
 ﻿
 namespace BD_6_semester
 {
-    partial class Export
+    partial class prices
     {
         /// <summary>
         /// Required designer variable.
@@ -29,6 +29,7 @@ namespace BD_6_semester
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel4 = new System.Windows.Forms.Panel();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonEdit = new System.Windows.Forms.Button();
@@ -55,10 +56,24 @@ namespace BD_6_semester
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.exportDataSet3 = new BD_6_semester.exportDataSet3();
+            this.priceBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.priceTableAdapter = new BD_6_semester.exportDataSet3TableAdapters.priceTableAdapter();
+            this.exportDataSet4 = new BD_6_semester.exportDataSet4();
+            this.priceBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.priceTableAdapter1 = new BD_6_semester.exportDataSet4TableAdapters.priceTableAdapter();
+            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.salepriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tradedutyidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel4.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exportDataSet3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priceBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.exportDataSet4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priceBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel4
@@ -69,10 +84,10 @@ namespace BD_6_semester
             this.panel4.Controls.Add(this.buttonDelete);
             this.panel4.Controls.Add(this.buttonFactoryAdd);
             this.panel4.Controls.Add(this.label13);
-            this.panel4.Location = new System.Drawing.Point(528, 417);
+            this.panel4.Location = new System.Drawing.Point(525, 417);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(212, 219);
-            this.panel4.TabIndex = 19;
+            this.panel4.TabIndex = 23;
             // 
             // buttonSave
             // 
@@ -83,7 +98,6 @@ namespace BD_6_semester
             this.buttonSave.TabIndex = 15;
             this.buttonSave.Text = "Сохранить";
             this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonEdit
             // 
@@ -94,7 +108,6 @@ namespace BD_6_semester
             this.buttonEdit.TabIndex = 14;
             this.buttonEdit.Text = "Изменить";
             this.buttonEdit.UseVisualStyleBackColor = true;
-            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
             // buttonDelete
             // 
@@ -105,7 +118,6 @@ namespace BD_6_semester
             this.buttonDelete.TabIndex = 13;
             this.buttonDelete.Text = "Удалить";
             this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
             // buttonFactoryAdd
             // 
@@ -116,7 +128,6 @@ namespace BD_6_semester
             this.buttonFactoryAdd.TabIndex = 12;
             this.buttonFactoryAdd.Text = "Новая запись";
             this.buttonFactoryAdd.UseVisualStyleBackColor = true;
-            this.buttonFactoryAdd.Click += new System.EventHandler(this.buttonFactoryAdd_Click);
             // 
             // label13
             // 
@@ -146,10 +157,10 @@ namespace BD_6_semester
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.label5);
             this.panel2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel2.Location = new System.Drawing.Point(166, 417);
+            this.panel2.Location = new System.Drawing.Point(163, 417);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(356, 196);
-            this.panel2.TabIndex = 18;
+            this.panel2.TabIndex = 22;
             // 
             // dateTimePicker3
             // 
@@ -265,14 +276,19 @@ namespace BD_6_semester
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(9, 61);
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idDataGridViewTextBoxColumn,
+            this.salepriceDataGridViewTextBoxColumn,
+            this.tradedutyidDataGridViewTextBoxColumn,
+            this.productidDataGridViewTextBoxColumn});
+            this.dataGridView1.DataSource = this.priceBindingSource1;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 61);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(905, 350);
-            this.dataGridView1.TabIndex = 17;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.TabIndex = 21;
             // 
             // panel1
             // 
@@ -284,8 +300,8 @@ namespace BD_6_semester
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(927, 55);
-            this.panel1.TabIndex = 16;
+            this.panel1.Size = new System.Drawing.Size(923, 55);
+            this.panel1.TabIndex = 20;
             // 
             // label4
             // 
@@ -312,7 +328,6 @@ namespace BD_6_semester
             this.buttonRefresh.TabIndex = 1;
             this.buttonRefresh.Text = "Обновить";
             this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // label3
             // 
@@ -320,22 +335,78 @@ namespace BD_6_semester
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.Location = new System.Drawing.Point(5, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 20);
+            this.label3.Size = new System.Drawing.Size(54, 20);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Экспорт";
+            this.label3.Text = "Цены";
             // 
-            // Export
+            // exportDataSet3
+            // 
+            this.exportDataSet3.DataSetName = "exportDataSet3";
+            this.exportDataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // priceBindingSource
+            // 
+            this.priceBindingSource.DataMember = "price";
+            this.priceBindingSource.DataSource = this.exportDataSet3;
+            // 
+            // priceTableAdapter
+            // 
+            this.priceTableAdapter.ClearBeforeFill = true;
+            // 
+            // exportDataSet4
+            // 
+            this.exportDataSet4.DataSetName = "exportDataSet4";
+            this.exportDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // priceBindingSource1
+            // 
+            this.priceBindingSource1.DataMember = "price";
+            this.priceBindingSource1.DataSource = this.exportDataSet4;
+            // 
+            // priceTableAdapter1
+            // 
+            this.priceTableAdapter1.ClearBeforeFill = true;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
+            this.idDataGridViewTextBoxColumn.HeaderText = "id";
+            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            this.idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // salepriceDataGridViewTextBoxColumn
+            // 
+            this.salepriceDataGridViewTextBoxColumn.DataPropertyName = "sale_price";
+            this.salepriceDataGridViewTextBoxColumn.HeaderText = "sale_price";
+            this.salepriceDataGridViewTextBoxColumn.Name = "salepriceDataGridViewTextBoxColumn";
+            this.salepriceDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // tradedutyidDataGridViewTextBoxColumn
+            // 
+            this.tradedutyidDataGridViewTextBoxColumn.DataPropertyName = "trade_duty_id";
+            this.tradedutyidDataGridViewTextBoxColumn.HeaderText = "trade_duty_id";
+            this.tradedutyidDataGridViewTextBoxColumn.Name = "tradedutyidDataGridViewTextBoxColumn";
+            this.tradedutyidDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // productidDataGridViewTextBoxColumn
+            // 
+            this.productidDataGridViewTextBoxColumn.DataPropertyName = "product_id";
+            this.productidDataGridViewTextBoxColumn.HeaderText = "product_id";
+            this.productidDataGridViewTextBoxColumn.Name = "productidDataGridViewTextBoxColumn";
+            this.productidDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // prices
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(927, 642);
+            this.ClientSize = new System.Drawing.Size(923, 658);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel1);
-            this.Name = "Export";
-            this.Text = "Export";
-            this.Load += new System.EventHandler(this.Export_Load);
+            this.Name = "prices";
+            this.Text = "prices";
+            this.Load += new System.EventHandler(this.prices_Load);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -343,6 +414,10 @@ namespace BD_6_semester
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exportDataSet3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priceBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.exportDataSet4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.priceBindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -356,6 +431,12 @@ namespace BD_6_semester
         private System.Windows.Forms.Button buttonFactoryAdd;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxKeep;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxProduct;
@@ -369,11 +450,15 @@ namespace BD_6_semester
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.Label label2;
+        private exportDataSet3 exportDataSet3;
+        private System.Windows.Forms.BindingSource priceBindingSource;
+        private exportDataSet3TableAdapters.priceTableAdapter priceTableAdapter;
+        private exportDataSet4 exportDataSet4;
+        private System.Windows.Forms.BindingSource priceBindingSource1;
+        private exportDataSet4TableAdapters.priceTableAdapter priceTableAdapter1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn salepriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tradedutyidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn productidDataGridViewTextBoxColumn;
     }
 }

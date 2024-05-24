@@ -36,6 +36,7 @@ namespace BD_6_semester
             dataGridView1.Columns.Add("product_name", "Название товара");
             dataGridView1.Columns.Add("article_number", "Артикул");
             dataGridView1.Columns.Add("cost_price", "Себестоимость товара");
+            dataGridView1.Columns.Add("sale_price", "Цена");
 
             dataGridView1.Columns.Add("IsNew", String.Empty);
         }
@@ -50,6 +51,7 @@ namespace BD_6_semester
                                 record.GetString(3),
                                 record.GetString(4),
                                 record.GetValue(5),
+                                record.GetValue(6),
                                 RowState.ModifiedNew);
             }
             catch (Exception)
@@ -63,8 +65,10 @@ namespace BD_6_semester
         {
             dgw.Rows.Clear();
 
-            string query = $"select trade_duty.id, country.country_name, trade_duty.title, product.product_name, product.article_number, product.cost_price " +
-                            $"from trade_duty LEFT JOIN country on country.id = trade_duty.country_id left join product on product.id = trade_duty.product_id; ";
+            string query = $"SELECT trade_duty.id, country.country_name, trade_duty.title, product.product_name, product.article_number, product.cost_price, price.sale_price " +
+                $"FROM trade_duty LEFT JOIN country on country.id = trade_duty.country_id " +
+                $"left join product on product.id = trade_duty.product_id " +
+                $"left join price on price.product_id = trade_duty.product_id; ";
 
             SqlCommand command = new SqlCommand(query, dataBase.GetConnection());
 
@@ -103,10 +107,10 @@ namespace BD_6_semester
 
             if (dataGridView1.Rows[index].Cells[0].Value.ToString() == string.Empty)
             {
-                dataGridView1.Rows[index].Cells[6].Value = RowState.Deleted;
+                dataGridView1.Rows[index].Cells[7].Value = RowState.Deleted;
             }
 
-            dataGridView1.Rows[index].Cells[6].Value = RowState.Deleted;
+            dataGridView1.Rows[index].Cells[7].Value = RowState.Deleted;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -175,7 +179,7 @@ namespace BD_6_semester
 
             for (int index = 0; index < dataGridView1.Rows.Count; index++)
             {
-                var rowState = (RowState)dataGridView1.Rows[index].Cells[6].Value;
+                var rowState = (RowState)dataGridView1.Rows[index].Cells[7].Value;
 
                 if (rowState == RowState.Existed)
                     continue;

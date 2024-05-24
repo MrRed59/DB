@@ -49,5 +49,17 @@ namespace BD_6_semester
             keeping form1 = new keeping();
             form1.Show();
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Export form1 = new Export();
+            form1.Show();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            prices form1 = new prices();
+            form1.Show();
+        }
     }
 }
