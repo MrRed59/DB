@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 
@@ -222,10 +216,6 @@ namespace BD_6_semester
             RefreshDataGrid(dataGridView1);
         }
 
-
-        /// <summary>
-        /// /////////////////////
-        /// </summary>
         private void Edit()
         {
             var selectedRowIndex = dataGridView1.CurrentCell.RowIndex;
@@ -263,10 +253,6 @@ namespace BD_6_semester
             }
         }
 
-
-        /// <summary>
-        /// ///
-        /// </summary>
         private void product_Load(object sender, EventArgs e)
         {
             CreateColumns();

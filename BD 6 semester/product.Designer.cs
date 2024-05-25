@@ -176,11 +176,11 @@ namespace BD_6_semester
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label9.Location = new System.Drawing.Point(17, 183);
+            this.label9.Location = new System.Drawing.Point(70, 187);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(128, 16);
+            this.label9.Size = new System.Drawing.Size(75, 16);
             this.label9.TabIndex = 19;
-            this.label9.Text = "Название завода:";
+            this.label9.Text = "ID завода:";
             // 
             // textBoxMargin
             // 
